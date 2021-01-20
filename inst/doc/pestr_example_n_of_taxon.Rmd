@@ -1,0 +1,144 @@
+---
+title: "Example workflow of checking taxons affecting Abies alba"
+output:
+  rmarkdown::html_vignette:
+    css: alert_style.css
+vignette: >
+  %\VignetteIndexEntry{Example workflow of checking taxons affecting Abies alba}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE,
+  fig.show = "hold",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+```{r setup}
+library("pestr")
+library("dplyr")
+```
+
+# Overview
+
+Assume that you are assessing pest threats to *Abies alba* -- **European silver fir**. It would be wise to go to [EPPO Global Database](https://gd.eppo.int), type *Abies alba* in search field and check all the information you need, copy paste them into spreadsheet and make some analyses. On the other hand, you can just use `pestr` package and do everything easily from `R` directly saving time on whole *copy-pasting* procedures. To make this example easy lets assume that your goal is to check number of taxons and number of particular types (*major*, *minor*, etc.) of pests. Therefore steps you would need to make in `R` are presented below.
+
+<div class="alert alert-warning">
+I assume that you already have *eppocodes.sqlite* database in your *working directory*. If not you should download it manually from [EPPO Data Services](https://data.eppo.int) or using `eppo_database_download` function. I also assume that you have basic knowledge of using `dplyr` package and piping `%>%` operator.
+</div>
+
+## Step I -- get valid *eppocode* for *Abies alba*
+
+First you need valid *eppocode* of *Abies alba*. To do this you will need to use `eppo_names_tables` function and save your results to a variable like in the code example below:
+
+```{r eval = FALSE, echo = TRUE}
+abies_alba <- eppo_names_tables("Abies alba")
+```
+
+This variable will be our input for next step.
+
+## Step II -- query **EPPO Data Services**
+
+We can now look for all the existing pests of *Abies alba* that exists in [EPPO Data Services](https://data.eppo.int). To do this we need to use `eppo_tabeltools_pests` function. There are two options how you can access the information.
+
+### With `eppo_names_tables` output as an argument:
+
+You will need result of `eppo_names_tables` function as first argument and the second one is token -- which allows you to connect to **EPPO API**. You get it by registering to [EPPO Data Services](https://data.eppo.int) which is free of charge. You need to paste your token to `create_eppo_token` function and assign the results to a variable (here we use `eppo_token`) that will be used among all `pestr` functions that connect to **EPPO API**. 
+
+### Querying with valid eppocode (or eppocodes)
+
+`eppo_tabletools_pests` will take 3 arguments with this approach:
+
+* token -- a variable that store result of `create_eppo_token`;
+* character vector of eppocodes (in this example **ABIAL**);
+* use_raw_codes -- logical value `TRUE`
+
+Below code shows this in action:
+
+```{r eval = FALSE, echo = TRUE}
+### Firsr create eppo_token variable
+eppo_token <- eppo_create_token("<place your eppo token here>")
+
+### For token argument, please use eppo_token
+abies_alba_pests <- eppo_tabletools_pests(token = eppo_token,
+                                          raw_eppocodes = "ABIAL",
+                                          use_raw_codes = TRUE)
+```
+
+```{r eval = TRUE, echo = FALSE}
+abies_alba_pests <- readRDS("vignette_mock_pests.RDS")
+```
+
+Looking at structure of `abies_alba_pests` variable we see that it is a *list* containing 2 `data.frame`.
+
+```{r eval = TRUE, echo = TRUE}
+str(abies_alba_pests)
+```
+
+The *long_table* element contains what we actually need for our analyses: *pest_eppocode* and *labelclass* columns. Lets start with latter.
+
+## Step 3 -- number of pests type
+
+Pest types are stored in *labelclass* column. We will use few very basic `R` and `dplyr` package commands to check numbers we are interested in.
+
+```{r eval = TRUE, echo = TRUE}
+### First select colums labelclass from long_table element,
+### and use table to check frequencies
+abies_alba_pests$long_table %>%
+  dplyr::select(labelclass) %>%
+  table()
+
+### Than we can create very simple barplot to visualize number of
+### species in particular type of pest
+abies_alba_pests$long_table %>%
+  dplyr::select(labelclass) %>%
+  table() %>%
+  barplot(xlab = "Type of pest", ylab = "Number of species",
+           col = "#AF0011", ylim = c(0, 30))
+```
+
+## Step 4 -- Number of taxons
+
+Obtaining number of pests taxons is not very complicated. Since we can use `eppocodes` directly, we can pass whole column to `eppo_tabletools_taxo` function, which will retrieve data on pests taxonomy.
+
+```{r eval = TRUE, echo = TRUE}
+### Extract eppocodes of pests
+pests_eppocodes <- abies_alba_pests$long_table %>%
+  dplyr::select(pests_eppocode) %>%
+  unlist()
+```
+
+Now, we can pass `pest_eppocodes` variable as `raw_eppocodes` argument:
+
+```{r eval = FALSE, echo = TRUE}
+pests_taxonomy <- eppo_tabletools_taxo(token = eppo_token,
+                                       raw_eppocodes = pests_eppocodes,
+                                       use_raw_codes = TRUE)
+```
+
+```{r eval = TRUE, echo = FALSE}
+pests_taxonomy <- readRDS("vignette_mock_pests_taxo.RDS")
+```
+
+This time we can take a shortcut and use second element of list `compact_table`. We can now check the numbers using `table` function and plot results with simple `barplot`.
+
+```{r eval = TRUE, echo = TRUE}
+pests_taxonomy$compact_table %>%
+  dplyr::select(taxonomy) %>%
+  table()
+
+pests_taxonomy$compact_table %>%
+  dplyr::select(taxonomy) %>%
+  table() %>%
+   barplot(xlab = "Classification of pest", ylab = "Number of species",
+           col = "#AF0011", ylim = c(0, 30))
+```
+
+Now, knowing basics of how functions interacts, you are ready to play with your own workflows and analyses.

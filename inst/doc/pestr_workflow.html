@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Michal Jan Czyz" />
+
+<meta name="date" content="2021-01-16" />
+
+<title>pestr Workflow</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A%2Ealert%7B%0Apadding%3A15px%3B%0Amargin%2Dbottom%3A20px%3B%0Abackground%3A%23eee%3B%0Aborder%2Dbottom%3A5px%20solid%20%23ddd%0A%7D%0A%2Ealert%2Dwarning%7B%0Abackground%3A%23fcf8e3%3B%0Aborder%2Dcolor%3A%23faebcc%3B%0Acolor%3A%238a6d3b%0A%7D%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">pestr Workflow</h1>
+<h4 class="author">Michal Jan Czyz</h4>
+<h4 class="date">2021-01-16</h4>
+
+
+
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p><code>pestr</code> Package is a set of functions and wrappers that allow painless and quick data retrieval on pests and their hosts from <a href="https://data.eppo.int/">EPPO Data Services</a> and <a href="https://gd.eppo.int/">EPPO Global Database</a>. First of all, it allows extraction of <em>scientific names</em> of organisms (and viruses), as well as <em>synonyms</em> and <em>common names</em> from <em>SQLite</em> database. The data base can be easily downloaded with <code>eppo_database_download()</code> function. Second, there are four functions in the package that use <strong>REST API</strong> to extract data on <em>hosts</em>, <em>categorization</em> and <em>taxonomy</em> and <em>pests</em>. Further, there is a function that downloads <strong>data</strong> <em>csv</em> files containing information on organisms (and viruses) distribution. Important feature is that the <em>csv</em> are <strong>never saved onto hard drive</strong>, instead they are directly used to create <code>data.frame</code> that can be assigned to a variable in <strong>R</strong>. Beside above features, this package provides some other helper functions e.g. connecting to database or storing <em>EPPO token</em> as variable.</p>
+</div>
+<div id="example-workflow" class="section level1">
+<h1>Example workflow</h1>
+<div id="setting-up-token-and-connecting-to-sqlite-database" class="section level2">
+<h2>Setting up <code>token</code> and connecting to <em>SQLite</em> database</h2>
+<p>In order to start working with <strong>pestr</strong> package, you should register yourself (<em>free of charge</em>) to <a href="https://data.eppo.int/">EPPO Data Services</a>. Then run <code>create_eppo_token</code> and assign results to a variable which will be used by functions that connect to <strong>REST API</strong>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>eppo_token <span class="ot">&lt;-</span> <span class="fu">create_eppo_token</span>(<span class="st">&#39;&lt;&lt;your_EPPO_token&gt;&gt;&#39;</span>)</span></code></pre></div>
+<p>Next, you can run <code>eppo_database_download</code> function that will download (by default to your <strong>working directory</strong>, which can be override with <code>filepath</code> argument) archive with the <em>SQLite</em> file. If you are on <strong>Linux</strong> operating system, file will be extracted into your working directory (or other directory provided in <code>filepath</code> argument). On <strong>Windows</strong> you will be asked to extract the database file manually.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eppo_database_download</span>()</span></code></pre></div>
+<p>Last step of setup is to connect to database file, which can be easily done with <code>eppo_database_connect</code> function.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>eppo_SQLite <span class="ot">&lt;-</span> <span class="fu">eppo_database_connect</span>()</span></code></pre></div>
+<p>With this three short steps you are ready to go.</p>
+</div>
+<div id="extracting-tables-with-scientific-common-and-synonym-names" class="section level2">
+<h2>Extracting tables with scientific, common and synonym names</h2>
+<p>Currently searching for pest names supports scientific names, synonyms and common names. By default search will work with partial names – e.g. when you query for <em>Cydia packardi</em> you get information related to this species, while when you query for <em>Cydia</em> you get information on whole genus. Likewise, when you search for <em>Droso</em> you will get information on all species that contain <em>Droso</em> in their names. Moreover you can pass whole vector of terms in one shot, e.g. <code>c(&#39;Xylella&#39;, &#39;Cydia packardi&#39;, &#39;Droso&#39;)</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create vector of names that you are looking for</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pests_query <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;Cydia&#39;</span>, <span class="st">&quot;Triticum aestivum&quot;</span>, <span class="st">&quot;abcdef&quot;</span>, <span class="st">&quot;cadang&quot;</span>)</span></code></pre></div>
+<p>Than you should start with querying for names and assigning your results to a variable. This variable will contain <code>eppocodes</code> that are used by other functions to extract data from <strong>EPPO REST API</strong>. <code>eppo_names_tables</code> takes two arguments: first is a vector of names to query the database, second is variable with connection to <em>SQLite</em> database.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pest_names <span class="ot">&lt;-</span> <span class="fu">eppo_names_tables</span>(pests_query, eppo_SQLite)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pest_names)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#names that exist in database</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pest_example[[<span class="dv">1</span>]], <span class="dv">5</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#names that were not found</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pest_example[[<span class="dv">2</span>]], <span class="dv">5</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#preferred names for eppocodes from first table</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pest_example[[<span class="dv">3</span>]], <span class="dv">5</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#all names that are associated to eppocodes from first data frame</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pest_example[[<span class="dv">4</span>]], <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;exist_in_DB&quot;          &quot;not_in_DB&quot;            &quot;pref_names&quot;          
+#&gt; [4] &quot;all_associated_names&quot;</code></pre>
+<table style="width:80%;">
+<caption>
+Names that exist in database
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+codeid
+</th>
+<th style="text-align:left;">
+fullname
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+6698
+</td>
+<td style="text-align:left;">
+Cydia pomonella
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8607
+</td>
+<td style="text-align:left;">
+Cydia inopinata
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8608
+</td>
+<td style="text-align:left;">
+Cydia leucostoma
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8609
+</td>
+<td style="text-align:left;">
+Cydia sp.
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9907
+</td>
+<td style="text-align:left;">
+Ephialtes cydiae
+</td>
+</tr>
+</tbody>
+</table>
+<table style="width:80%;">
+<caption>
+Preferred names for eppocodes from first table
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+codeid
+</th>
+<th style="text-align:left;">
+fullname
+</th>
+<th style="text-align:left;">
+eppocode
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+6698
+</td>
+<td style="text-align:left;">
+Cydia pomonella
+</td>
+<td style="text-align:left;">
+CARPPO
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8607
+</td>
+<td style="text-align:left;">
+Grapholita inopinata
+</td>
+<td style="text-align:left;">
+CYDIIN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8608
+</td>
+<td style="text-align:left;">
+Cydia leucostoma
+</td>
+<td style="text-align:left;">
+CYDILE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8609
+</td>
+<td style="text-align:left;">
+Cydia sp.
+</td>
+<td style="text-align:left;">
+CYDISP
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9907
+</td>
+<td style="text-align:left;">
+Ephialtes cydiae
+</td>
+<td style="text-align:left;">
+EPHICY
+</td>
+</tr>
+</tbody>
+</table>
+<table style="width:80%;">
+<caption>
+All names that are associated to eppocodes from first data frame
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+codeid
+</th>
+<th style="text-align:left;">
+fullname
+</th>
+<th style="text-align:right;">
+preferred
+</th>
+<th style="text-align:left;">
+codelang
+</th>
+<th style="text-align:left;">
+eppocode
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+6698
+</td>
+<td style="text-align:left;">
+æblevikler
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+da
+</td>
+<td style="text-align:left;">
+CARPPO
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6698
+</td>
+<td style="text-align:left;">
+Obstmade
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+de
+</td>
+<td style="text-align:left;">
+CARPPO
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6698
+</td>
+<td style="text-align:left;">
+carpocapse des pommes
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+fr
+</td>
+<td style="text-align:left;">
+CARPPO
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6698
+</td>
+<td style="text-align:left;">
+pyrale de la pomme
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+fr
+</td>
+<td style="text-align:left;">
+CARPPO
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6698
+</td>
+<td style="text-align:left;">
+ver des pommes et des poires
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+fr
+</td>
+<td style="text-align:left;">
+CARPPO
+</td>
+</tr>
+</tbody>
+</table>
+<p>As a result you will get <code>list</code> containing 3 <code>data.frames</code> and <code>vector</code>:</p>
+<ul>
+<li><code>exist_in_DB</code> – <code>data.frame</code> with names that are present in <strong>EPPO Data Services</strong>;</li>
+<li><code>not_in_DB</code> – <code>vector</code> with names that are not present in database;</li>
+<li><code>pref_names</code> – <code>data.frame</code> with preferred names and <code>eppocodes</code>,</li>
+<li><code>all_associated_names</code> – <code>data.frame</code> with all associated names to <code>eppocodes</code> from third <code>data.frame</code>.</li>
+</ul>
+<div class="alert alert-warning">
+<p><strong>REMEMBER:</strong> Other <code>eppo_tabletools_</code> functions use results of this function or <em>raw</em> eppocodes to access data from <strong>EPPO Global Database</strong> and <strong>EPPO Data Services</strong>.</p>
+</div>
+</div>
+<div id="eppo_tabletools_-functions-to-extract-categorization-hosts-taxonomy-distribution-and-pests" class="section level2">
+<h2><code>eppo_tabletools_</code> functions to extract categorization, hosts, taxonomy, distribution and pests</h2>
+<p>This functions works separately from each other, thus there is no need to use all of them. There is no need to use them in any particular order. Functions for categorization, hosts taxonomy and pests takes two arguments:</p>
+<ul>
+<li><code>names_table</code> – variable containing result of <code>eppo_names_tables</code>;</li>
+<li><code>token</code> – variable created with <code>create_eppo_token</code></li>
+</ul>
+<p><strong>OR</strong> three arguments:</p>
+<ul>
+<li><code>token</code> – same as above;</li>
+<li><code>raw_eppocodes</code> – character vector of eppocodes (e.q. `c(“XYLEFA”, “ABIAL”));</li>
+<li><code>use_raw_codes</code> – logical set to TRUE.</li>
+</ul>
+<div id="categorization-of-pests" class="section level3">
+<h3>Categorization of pests</h3>
+<p>As result <code>eppo_tabletools_cat</code> you will get <code>list</code> with two elements:</p>
+<ul>
+<li><code>data.frame</code> with categorization tables</li>
+<li><code>data.frame</code> with categorization for each eppocode condensed to single cell.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pests_cat <span class="ot">&lt;-</span> <span class="fu">eppo_tabletools_cat</span>(pest_names, eppo_token)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#long format table</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pests_cat[[<span class="dv">1</span>]], <span class="dv">5</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#comapct table with information for each eppocode condensed into one cell</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pests_cat[[<span class="dv">2</span>]],<span class="dv">5</span>)</span></code></pre></div>
+<table>
+<caption>Long format table with pests categorization</caption>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="left">nomcontinent</th>
+<th align="left">isocode</th>
+<th align="left">country</th>
+<th align="left">qlist</th>
+<th align="left">qlistlabel</th>
+<th align="right">yr_add</th>
+<th align="right">yr_del</th>
+<th align="right">yr_trans</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="left">Africa</td>
+<td align="left">EG</td>
+<td align="left">Egypt</td>
+<td align="left">2</td>
+<td align="left">A2 list</td>
+<td align="right">2018</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">CARPPO</td>
+<td align="left">Africa</td>
+<td align="left">3G</td>
+<td align="left">Southern Africa</td>
+<td align="left">2</td>
+<td align="left">A2 list</td>
+<td align="right">2001</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="left">America</td>
+<td align="left">CA</td>
+<td align="left">Canada</td>
+<td align="left">X</td>
+<td align="left">Quarantine pest</td>
+<td align="right">2019</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">CARPPO</td>
+<td align="left">Asia</td>
+<td align="left">BH</td>
+<td align="left">Bahrain</td>
+<td align="left">1</td>
+<td align="left">A1 list</td>
+<td align="right">2003</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="left">Asia</td>
+<td align="left">CN</td>
+<td align="left">China</td>
+<td align="left">1</td>
+<td align="left">A1 list</td>
+<td align="right">1993</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Compact table with condensed information on categorization</caption>
+<colgroup>
+<col width="1%" />
+<col width="98%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="left">categorization</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="left">Africa: Egypt: A2 list: add/del/trans: 2018/NA/NA; Southern Africa: A2 list: add/del/trans: 2001/NA/NA | America: Canada: Quarantine pest: add/del/trans: 2019/NA/NA | Asia: Bahrain: A1 list: add/del/trans: 2003/NA/NA; China: A1 list: add/del/trans: 1993/NA/NA | RPPO/EU: APPPC: A2 list: add/del/trans: 1993/NA/NA</td>
+</tr>
+<tr class="even">
+<td align="left">CYDIIN</td>
+<td align="left">Africa: Egypt: A1 list: add/del/trans: 2018/NA/NA; Morocco: Quarantine pest: add/del/trans: 2018/NA/NA; Tunisia: Quarantine pest: add/del/trans: 2012/NA/NA | America: Canada: Quarantine pest: add/del/trans: 2019/NA/NA; Mexico: Quarantine pest: add/del/trans: 2018/NA/NA | Asia: Bahrain: A1 list: add/del/trans: 2003/NA/NA; Israel: Quarantine pest: add/del/trans: 2009/NA/NA; Jordan: A1 list: add/del/trans: 2013/NA/NA | Europe: Turkey: A1 list: add/del/trans: 2016/NA/NA; Ukraine: A1 list: add/del/trans: 2019/NA/NA | RPPO/EU: EPPO: A2 list: add/del/trans: 1994/NA/1999; EU: A1 Quarantine pest (Annex II A): add/del/trans: 2019/NA/NA</td>
+</tr>
+<tr class="odd">
+<td align="left">CYDILE</td>
+<td align="left">NA: NA: NA: add/del/trans: NA/NA/NA</td>
+</tr>
+<tr class="even">
+<td align="left">CYDISP</td>
+<td align="left">NA: NA: NA: add/del/trans: NA/NA/NA</td>
+</tr>
+<tr class="odd">
+<td align="left">EPHICY</td>
+<td align="left">NA: NA: NA: add/del/trans: NA/NA/NA</td>
+</tr>
+</tbody>
+</table>
+<p>If you will to limit the data received from <strong>EPPO Data Services</strong>, <em>and you are confident that you know exactly what you are looking for</em>, you can use eppocodes directly.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pests_cat <span class="ot">&lt;-</span> <span class="fu">eppo_tabletools_cat</span>(<span class="at">token =</span> eppo_token,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">raw_eppocodes =</span> <span class="fu">c</span>(<span class="st">&quot;LASPPA&quot;</span>, <span class="st">&quot;TRZAX&quot;</span>, <span class="st">&quot;CCCVD0&quot;</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">use_raw_codes =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pest_cat[[<span class="dv">2</span>]]</span></code></pre></div>
+<table>
+<caption>Limited results of using eppocodes LASPPA, TRZAX, CCCVD0</caption>
+<colgroup>
+<col width="0%" />
+<col width="99%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="left">categorization</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">LASPPA</td>
+<td align="left">Africa: Egypt: A1 list: add/del/trans: 2018/NA/NA; Morocco: Quarantine pest: add/del/trans: 2018/NA/NA; Tunisia: Quarantine pest: add/del/trans: 2012/NA/NA | America: Mexico: Quarantine pest: add/del/trans: 2018/NA/NA | Asia: Bahrain: A1 list: add/del/trans: 2003/NA/NA; Israel: Quarantine pest: add/del/trans: 2009/NA/NA; Jordan: A1 list: add/del/trans: 2013/NA/NA | Europe: Russia: A1 list: add/del/trans: 2014/NA/NA; Turkey: A1 list: add/del/trans: 2016/NA/NA; Ukraine: A1 list: add/del/trans: 2019/NA/NA | RPPO/EU: EAEU: A1 list: add/del/trans: 2018/NA/NA; EPPO: A1 list: add/del/trans: 1995/NA/NA; EU: A1 Quarantine pest (Annex II A): add/del/trans: 2019/NA/NA</td>
+</tr>
+<tr class="even">
+<td align="left">TRZAX</td>
+<td align="left">NA: NA: NA: add/del/trans: NA/NA/NA</td>
+</tr>
+<tr class="odd">
+<td align="left">CCCVD0</td>
+<td align="left">Africa: Egypt: Regulated non-quarantine pest: add/del/trans: 2018/NA/NA; Morocco: Quarantine pest: add/del/trans: 2018/NA/NA | America: Argentina: A1 list: add/del/trans: 2019/NA/NA; Brazil: A1 list: add/del/trans: 2018/NA/NA; Chile: A1 list: add/del/trans: 2019/NA/NA; Mexico: Quarantine pest: add/del/trans: 2018/NA/NA; United States of America: Quarantine pest: add/del/trans: 1989/NA/NA | Asia: Bahrain: A1 list: add/del/trans: 2003/NA/NA; China: A2 list: add/del/trans: 1988/NA/NA; Israel: Quarantine pest: add/del/trans: 2009/NA/NA | Europe: Turkey: A1 list: add/del/trans: 2016/NA/NA | RPPO/EU: APPPC: A2 list: add/del/trans: 1988/NA/NA; CAHFSA: A1 list: add/del/trans: 1990/NA/NA; COSAVE: A2 list: add/del/trans: 2018/NA/NA; EPPO: A1 list: add/del/trans: 1994/NA/NA; EU: A1 Quarantine pest (Annex II A): add/del/trans: 2019/NA/NA; PPPO: A2 list: add/del/trans: 1993/NA/NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="hosts-of-pests" class="section level3">
+<h3>Hosts of pests</h3>
+<p><code>eppo_tabletools_hosts</code> as a result returns a <code>list</code> of two <code>data.frame</code>:</p>
+<ul>
+<li>long table format with all the data, for all pests combined;</li>
+<li>with hosts are combined into single cell for each eppocode.</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pests_hosts <span class="ot">&lt;-</span> <span class="fu">eppo_tabletools_hosts</span>(pest_names, eppo_token)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pests_hosts[[<span class="dv">1</span>]], <span class="dv">5</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pests_hosts[[<span class="dv">2</span>]], <span class="dv">5</span>)</span></code></pre></div>
+<table>
+<caption>Long format table with pests hosts</caption>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="right">codeid</th>
+<th align="left">host_eppocode</th>
+<th align="right">idclass</th>
+<th align="left">labelclass</th>
+<th align="left">full_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="right">37021</td>
+<td align="left">MABSD</td>
+<td align="right">1</td>
+<td align="left">Major host</td>
+<td align="left">Malus domestica</td>
+</tr>
+<tr class="even">
+<td align="left">CARPPO</td>
+<td align="right">29214</td>
+<td align="left">CYDOB</td>
+<td align="right">9</td>
+<td align="left">Host</td>
+<td align="left">Cydonia oblonga</td>
+</tr>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="right">35259</td>
+<td align="left">IUGRE</td>
+<td align="right">9</td>
+<td align="left">Host</td>
+<td align="left">Juglans regia</td>
+</tr>
+<tr class="even">
+<td align="left">CARPPO</td>
+<td align="right">41521</td>
+<td align="left">PRNAR</td>
+<td align="right">9</td>
+<td align="left">Host</td>
+<td align="left">Prunus armeniaca</td>
+</tr>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="right">41563</td>
+<td align="left">PRNDO</td>
+<td align="right">9</td>
+<td align="left">Host</td>
+<td align="left">Prunus domestica</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Compact table with condensed information on hosts</caption>
+<colgroup>
+<col width="5%" />
+<col width="94%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="left">hosts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="left">Major host: Malus domestica; Host: Cydonia oblonga, Juglans regia, Prunus armeniaca, Prunus domestica, Prunus dulcis, Prunus persica, Pyrus communis</td>
+</tr>
+<tr class="even">
+<td align="left">CYDIIN</td>
+<td align="left">Major host: Malus domestica; Wild/Weed: Malus baccata; Host: Cydonia oblonga, Malus, Pyrus, Pyrus communis; Experimental: Prunus</td>
+</tr>
+<tr class="odd">
+<td align="left">CYDILE</td>
+<td align="left">Host: NA</td>
+</tr>
+<tr class="even">
+<td align="left">CYDISP</td>
+<td align="left">Host: NA</td>
+</tr>
+<tr class="odd">
+<td align="left">EPHICY</td>
+<td align="left">Host: NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="taxonomy-of-pests-and-hosts" class="section level3">
+<h3>Taxonomy of Pests and hosts</h3>
+<p><code>eppo_tabletools_taxo</code> as other functions from this family returns a <code>list</code> with two <code>data.frame</code>:</p>
+<ul>
+<li>fist is a long format taxonomy table;</li>
+<li>second is table with <em>main category</em> of each eppocode.</li>
+</ul>
+<p>Suppose, that from previous name query we are interested only in viroids and viruses. As they usually have a <em>viroid</em> or <em>virus</em> phrase in their name, we can simply limit the query to certain eppocodes.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>virs_eppocodes <span class="ot">&lt;-</span> pest_names<span class="sc">$</span>all_associated_names <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">&quot;viroid&quot;</span>, fullname) <span class="sc">|</span> <span class="fu">grepl</span>(<span class="st">&quot;virus&quot;</span>, fullname)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  .[,<span class="dv">5</span>] <span class="sc">%&gt;%</span> <span class="co">#eppocodes are in 5th column</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span></code></pre></div>
+<p>We can now pass <code>virs_eppocodes</code> as <code>raw_eppocodes</code> argument, and in consequence receive taxonomy of viroids and viruses only.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>virs_taxonomy <span class="ot">&lt;-</span> <span class="fu">eppo_tabletools_taxo</span>(<span class="at">token =</span> eppo_token,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">raw_eppocodes =</span> virs_eppocodes,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">use_raw_codes =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>virs_taxonomy<span class="sc">$</span>long_table <span class="co">#you can also access list elements by their names</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>virs_taxonomy<span class="sc">$</span>compact_table</span></code></pre></div>
+<table>
+<caption>Long table of viruses and viroids taxonomy</caption>
+<thead>
+<tr class="header">
+<th align="right">codeid</th>
+<th align="left">eppocode</th>
+<th align="left">prefname</th>
+<th align="right">level</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">60969</td>
+<td align="left">CPGV00</td>
+<td align="left">Viruses and viroids</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">64582</td>
+<td align="left">CPGV00</td>
+<td align="left">Baculoviridae</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">84121</td>
+<td align="left">CPGV00</td>
+<td align="left">Betabaculovirus</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">65443</td>
+<td align="left">CPGV00</td>
+<td align="left">Cydia pomonella granulovirus</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">60969</td>
+<td align="left">CCCVD0</td>
+<td align="left">Viruses and viroids</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">111354</td>
+<td align="left">CCCVD0</td>
+<td align="left">Riboviria</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">65268</td>
+<td align="left">CCCVD0</td>
+<td align="left">Pospiviroidae</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">65799</td>
+<td align="left">CCCVD0</td>
+<td align="left">Cocadviroid</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">64718</td>
+<td align="left">CCCVD0</td>
+<td align="left">Coconut cadang-cadang viroid</td>
+<td align="right">5</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Compact table of viruses and viroids taxonomy</caption>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="left">taxonomy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CPGV00</td>
+<td align="left">Baculoviridae</td>
+</tr>
+<tr class="even">
+<td align="left">CCCVD0</td>
+<td align="left">Riboviria</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="pests-of-hosts" class="section level3">
+<h3>Pests of hosts</h3>
+<p>It is possible to obtain data on pests of particular hosts with function <code>eppo_tabletools_pests</code>. Lets say we want to know all the pests associated with <em>Abies alba</em> (eppocode: <strong>ABIAL</strong>).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>abies_pests <span class="ot">&lt;-</span> <span class="fu">eppo_tabletools_pests</span>(<span class="at">token =</span> eppo_token,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">raw_eppocodes =</span> <span class="st">&quot;ABIAL&quot;</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">use_raw_codes =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abies_pests[[<span class="dv">1</span>]], <span class="dv">5</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(abies_pests[[<span class="dv">2</span>]], <span class="dv">5</span>)</span></code></pre></div>
+<table>
+<caption>Long table of Abies alba pests</caption>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="left">pests_eppocode</th>
+<th align="right">idclass</th>
+<th align="left">labelclass</th>
+<th align="left">fullname</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ABIAL</td>
+<td align="left">MELMME</td>
+<td align="right">10</td>
+<td align="left">Experimental</td>
+<td align="left">Melampsora medusae (as Abies)</td>
+</tr>
+<tr class="even">
+<td align="left">ABIAL</td>
+<td align="left">MELMMD</td>
+<td align="right">10</td>
+<td align="left">Experimental</td>
+<td align="left">Melampsora medusae f. sp. deltoidis (as Abies)</td>
+</tr>
+<tr class="odd">
+<td align="left">ABIAL</td>
+<td align="left">ACLRGL</td>
+<td align="right">9</td>
+<td align="left">Host</td>
+<td align="left">Acleris gloverana (as Abies)</td>
+</tr>
+<tr class="even">
+<td align="left">ABIAL</td>
+<td align="left">ACLRVA</td>
+<td align="right">9</td>
+<td align="left">Host</td>
+<td align="left">Acleris variana (as Abies)</td>
+</tr>
+<tr class="odd">
+<td align="left">ABIAL</td>
+<td align="left">AREAB</td>
+<td align="right">9</td>
+<td align="left">Host</td>
+<td align="left">Arceuthobium abietinum (as Abies)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Compact table of Abies alba pests</caption>
+<colgroup>
+<col width="0%" />
+<col width="99%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="left">pests</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ABIAL</td>
+<td align="left">Experimental: Melampsora medusae (as Abies), Melampsora medusae f. sp. deltoidis (as Abies); Host: Acleris gloverana (as Abies), Acleris variana (as Abies), Arceuthobium abietinum (as Abies), Arceuthobium douglasii (as Abies), Arceuthobium laricis (as Abies), Arceuthobium tsugense (as Abies), Bursaphelenchus xylophilus (as Abies), Chionaspis pinifoliae, Chionaspis pinifoliae (as Abies), Choristoneura freemani (as Abies), Choristoneura fumiferana (as Abies), Chrysomyxa abietis (as Abies), Coniferiporia weirii (as Pinaceae), Crisicoccus pini (as Abies), Dendroctonus micans, Dendrolimus sibiricus (as Abies), Dendrolimus spectabilis (as Abies), Dendrolimus superans (as Abies), Dothistroma septosporum, Dryocoetes confusus (as Abies), Gnathotrichus sulcatus (as Pinaceae), Gremmeniella abietina (as Abies), Heterobasidion irregulare (as Abies), Ips amitinus, Ips amitinus (as Abies), Ips subelongatus (as Abies), Ips typographus, Leptoglossus occidentalis (as Abies), Malacosoma disstria (as Abies), Monochamus alternatus (as Abies), Monochamus marmorator (as Abies), Monochamus obtusus (as Abies), Monochamus saltuarius (as Abies), Monochamus scutellatus (as Abies), Monochamus sutor (as Abies), Monochamus titillator (as Abies), Monochamus urussovi (as Abies), Phacidium coniferarum (as Abies), Phytophthora cinnamomi (as Pinaceae), Phytophthora ramorum, Pissodes castaneus, Polygraphus proximus (as Abies), Sirex ermak (as Abies), Sirex noctilio (as Abies), Tetropium gracilicorne (as Abies), Trichoferus campestris (as Abies); Major host: Chrysomyxa abietis, Monochamus sutor, Neonectria neomacrospora</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="distribution-of-pests" class="section level3">
+<h3>Distribution of pests</h3>
+<p><code>eppo_tabletools_distri</code> does not connect to REST API, but it downloads information from <em>csv</em> files directly from <strong>EPPO Global Database</strong>. As a consequence there is no <code>token</code> argument (since it does not need the EPPO token) – a variable containing result of <code>eppo_names_tables</code>. The function returns a two element <code>list</code>:</p>
+<ul>
+<li>first one contains <code>dataframe</code> with distribution for organism/virus, including <em>invalid records and eradicated status</em>;</li>
+<li>second contains single cell with condensed distribution for each eppocode, however including only <em>present</em> status.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pest_distri <span class="ot">&lt;-</span> <span class="fu">eppo_tabletools_distri</span>(pest_names)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pestr_distri[[<span class="dv">1</span>]], <span class="dv">5</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pestr_distri[[<span class="dv">2</span>]], <span class="dv">5</span>)</span></code></pre></div>
+<table>
+<caption>Long table with distribution of pests</caption>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="left">continent</th>
+<th align="left">country</th>
+<th align="left">state</th>
+<th align="left">country.code</th>
+<th align="left">state.code</th>
+<th align="left">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="left">Africa</td>
+<td align="left">Algeria</td>
+<td align="left">NA</td>
+<td align="left">DZ</td>
+<td align="left">NA</td>
+<td align="left">Present, no details</td>
+</tr>
+<tr class="even">
+<td align="left">CARPPO</td>
+<td align="left">Africa</td>
+<td align="left">Egypt</td>
+<td align="left">NA</td>
+<td align="left">EG</td>
+<td align="left">NA</td>
+<td align="left">Present, no details</td>
+</tr>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="left">Africa</td>
+<td align="left">Libya</td>
+<td align="left">NA</td>
+<td align="left">LY</td>
+<td align="left">NA</td>
+<td align="left">Present, no details</td>
+</tr>
+<tr class="even">
+<td align="left">CARPPO</td>
+<td align="left">Africa</td>
+<td align="left">Mauritius</td>
+<td align="left">NA</td>
+<td align="left">MU</td>
+<td align="left">NA</td>
+<td align="left">Present, no details</td>
+</tr>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="left">Africa</td>
+<td align="left">Morocco</td>
+<td align="left">NA</td>
+<td align="left">MA</td>
+<td align="left">NA</td>
+<td align="left">Present, no details</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Compact table with distribution of pests</caption>
+<colgroup>
+<col width="1%" />
+<col width="98%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">eppocode</th>
+<th align="left">distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CARPPO</td>
+<td align="left">Africa: Algeria, Egypt, Libya, Mauritius, Morocco, South Africa, Tunisia; America: Argentina, Bolivia, Brazil, Canada, Chile, Colombia, Mexico, Peru, United States of America, Uruguay; Asia: Afghanistan, China, India, Iran, Iraq, Israel, Jordan, Kazakhstan, Kyrgyzstan, Lebanon, Pakistan, Syria, Tajikistan, Turkmenistan, Uzbekistan; Europe: Albania, Armenia, Austria, Azerbaijan, Belarus, Belgium, Bulgaria, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Georgia, Germany, Greece, Hungary, Ireland, Italy, Latvia, Lithuania, Malta, Moldova, Netherlands, Norway, Poland, Portugal, Romania, Russia, Serbia, Slovakia, Slovenia, Spain, Sweden, Switzerland, Turkey, Ukraine, United Kingdom; Oceania: Australia, New Zealand</td>
+</tr>
+<tr class="even">
+<td align="left">CYDIIN</td>
+<td align="left">Asia: China, Japan; Europe: Russia</td>
+</tr>
+<tr class="odd">
+<td align="left">CYDILE</td>
+<td align="left">NA: NA</td>
+</tr>
+<tr class="even">
+<td align="left">CYDISP</td>
+<td align="left">NA: NA</td>
+</tr>
+<tr class="odd">
+<td align="left">EPHICY</td>
+<td align="left">NA: NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="whole-condensed-table-in-one-shot-currently-does-not-include-eppo_tabletools_pests" class="section level2">
+<h2>Whole condensed table in one shot (currently does not include <code>eppo_tabletools_pests</code>):</h2>
+<p>Last, but not least, package offers a simple wrapper over above mentioned functions. If you want to make one table with all the informations: names, categorization, hosts, distribution and taxonomy – condensed to <strong>one cell per pest</strong>, please use <code>eppo_table_full</code> function that takes arguments:</p>
+<ul>
+<li><code>names vector</code> – a character vector of pests/hosts names;</li>
+<li><code>sqlConnection</code> – a variable for <em>SQLite</em> connection (result of <code>eppo_database_connect</code>);</li>
+<li><code>token</code> – an variable storing <em>EPPO token</em> (<code>eppo_token</code>).</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>eppo_fulltable <span class="ot">&lt;-</span> <span class="fu">eppo_table_full</span>(<span class="fu">c</span>(<span class="st">&quot;Meloidogyne ethiopica&quot;</span>, <span class="st">&quot;Crataegus mexicana&quot;</span>),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                                  eppo_SQLite,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                                  eppo_token)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>eppo_fulltable</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="0%" />
+<col width="0%" />
+<col width="2%" />
+<col width="7%" />
+<col width="63%" />
+<col width="13%" />
+<col width="11%" />
+<col width="0%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">codeid</th>
+<th align="left">eppocode</th>
+<th align="left">Preferred_name</th>
+<th align="left">Other_names</th>
+<th align="left">hosts</th>
+<th align="left">categorization</th>
+<th align="left">distribution</th>
+<th align="left">taxonomy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">84193</td>
+<td align="left">CSCME</td>
+<td align="left">Crataegus mexicana</td>
+<td align="left">Other languages: aubépine du Mexique, Mexican hawthorn, tejocote</td>
+<td align="left">Host: NA</td>
+<td align="left">NA: NA: NA: add/del/trans: NA/NA/NA</td>
+<td align="left">NA: NA</td>
+<td align="left">Plantae</td>
+</tr>
+<tr class="even">
+<td align="right">79276</td>
+<td align="left">MELGET</td>
+<td align="left">Meloidogyne ethiopica</td>
+<td align="left">Other languages: root-knot nematode</td>
+<td align="left">Major host: Actinidia chinensis, Actinidia deliciosa, Solanum lycopersicum, Vitis labrusca, Vitis vinifera; Wild/Weed: Ageratum conyzoides, Datura stramonium, Solanum nigrum; Host: Acacia mearnsii, Agave sisalana, Asparagus officinalis, Beta vulgaris, Brassica oleracea, Capsicum frutescens, Citrullus lanatus, Cucumis melo, Cucumis sativus, Cucurbita, Ensete ventricosum, Glycine max, Lactuca sativa, Nicotiana tabacum, Phaseolus vulgaris, Polymnia sonchifolia, Prunus persica, Saccharum officinarum, Sida rhombifolia, Solanum tuberosum, Vicia faba, Vigna unguiculata</td>
+<td align="left">Africa: Morocco: Quarantine pest: add/del/trans: 2018/NA/NA | RPPO/EU: EPPO: Alert list: add/del/trans: 2011/NA/NA</td>
+<td align="left">Africa: Ethiopia, Kenya, Mozambique, South Africa, Tanzania, Zimbabwe; America: Brazil, Chile, Peru</td>
+<td align="left">Nematoda</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

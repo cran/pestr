@@ -6,6 +6,10 @@ knitr::opts_chunk$set(
 library('dplyr')
 
 ## ----eval = FALSE-------------------------------------------------------------
+#  ### Load packages
+#  library("pestr")
+
+## ----eval = FALSE-------------------------------------------------------------
 #  eppo_token <- create_eppo_token('<<your_EPPO_token>>')
 
 ## ----eval = FALSE-------------------------------------------------------------
@@ -15,19 +19,19 @@ library('dplyr')
 #  eppo_SQLite <- eppo_database_connect()
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  # Create vector of names that you are looking for
+#  ### Create vector of names that you are looking for
 #  pests_query <- c('Cydia', "Triticum aestivum", "abcdef", "cadang")
 
 ## ----eval = FALSE-------------------------------------------------------------
 #  pest_names <- eppo_names_tables(pests_query, eppo_SQLite)
 #  names(pest_names)
-#  #names that exist in database
+#  ### names that exist in database
 #  head(pest_example[[1]], 5)
-#  #names that were not found
+#  ### names that were not found
 #  head(pest_example[[2]], 5)
-#  #preferred names for eppocodes from first table
+#  ### preferred names for eppocodes from first table
 #  head(pest_example[[3]], 5)
-#  #all names that are associated to eppocodes from first data frame
+#  ### all names that are associated to eppocodes from first data frame
 #  head(pest_example[[4]], 5)
 
 ## ----eval = TRUE, echo = FALSE------------------------------------------------
@@ -48,9 +52,9 @@ names_example[[4]] %>%
 
 ## ----eval = FALSE-------------------------------------------------------------
 #  pests_cat <- eppo_tabletools_cat(pest_names, eppo_token)
-#  #long format table
+#  ### long format table
 #  head(pests_cat[[1]], 5)
-#  #comapct table with information for each eppocode condensed into one cell
+#  ### comapct table with information for each eppocode condensed into one cell
 #  head(pests_cat[[2]],5)
 
 ## ----eval = TRUE, echo = FALSE------------------------------------------------
@@ -94,14 +98,14 @@ hosts_example[[2]] %>%
 ## ----eval = FALSE-------------------------------------------------------------
 #  virs_eppocodes <- pest_names$all_associated_names %>%
 #    dplyr::filter(grepl("viroid", fullname) | grepl("virus", fullname)) %>%
-#    .[,5] %>% #eppocodes are in 5th column
+#    .[,5] %>% ## eppocodes are in 5th column
 #    unique()
 
 ## ----eval = FALSE-------------------------------------------------------------
 #  virs_taxonomy <- eppo_tabletools_taxo(token = eppo_token,
 #                                        raw_eppocodes = virs_eppocodes,
 #                                        use_raw_codes = TRUE)
-#  virs_taxonomy$long_table #you can also access list elements by their names
+#  virs_taxonomy$long_table ## you can also access list elements by their names
 #  virs_taxonomy$compact_table
 
 ## ----eval = TRUE, echo = FALSE------------------------------------------------
@@ -151,5 +155,5 @@ example_distri$compact_table %>%
 ## ----eval = TRUE, echo = FALSE------------------------------------------------
 example_full_table <- readRDS("vignette_mock_full_table.RDS")
 example_full_table %>%
-  knitr::kable()
+  knitr::kable(caption = "Full table with names, hosts, distribution, taxonomy and categorizatio of pests")
 

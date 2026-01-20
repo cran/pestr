@@ -1,3 +1,23 @@
+# pestr 0.8.4
+
+Fixed Readme files.
+
+# pestr 0.8.3
+
+## New functions
+
+* `eppo_citation` returns citation of **EPPO** resources in `bibtex` format.
+
+## Documentation updates
+
+* update `README`, correct typos, styling, add comments, *etc.*
+* update `NEWS.md`
+
+## Misc
+
+* new hex sticker
+* update `select` syntax in functions and tests
+
 # pestr 0.8.2
 
 ## Function updates
@@ -50,6 +70,7 @@
 * `eppo_tabletools_hosts` and `eppo_tabletools_pests` now include row with eppocode for which there is no data.
 
 # pestr 0.7.3
+
 ## New functions
 
 * `check_eppo_token` allows checking if `eppo_token` is correctly recognized by EPPO Data Services API.(#18)
@@ -104,7 +125,7 @@
 
 Added *pestr Workflow* vignette with example usage of **pestr** package functions -- fix (#8).
 
-# Fixed issues
+## Fixed issues
 
 Added some formatting to NEWS.md
 
@@ -133,7 +154,6 @@ with NA, when there is no record in DB.
 
 `eppo_tabletools_distri` correctly joins countries with continents, without
 repeating names of some countries (e.g. *USA*, *China*).
-
 
 # pestr 0.6.0
 
@@ -206,6 +226,3 @@ in EPPO template (#7)
 * Hosts and categorization paste some values double into string, small fix is
 needed for both test and function *FIXED*
 
-## TODOs
-
-* `taxize` package can be helpful with correction of organism names.

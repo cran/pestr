@@ -19,6 +19,17 @@ knitr::opts_chunk$set(
 library('dplyr')
 ```
 
+<!-- logo: start -->
+
+<img src="https://raw.githubusercontent.com/mczyzj/pestr/master/inst/figures/pestr-hex_center.png" width="250px" align="right" alt="pestr package hexsticker" style="border: 0px"/>
+
+<!-- logo: end -->
+
+```{r eval = FALSE}
+### Load packages
+library("pestr")
+```
+
 # Overview
 
 `pestr` Package is a set of functions and wrappers that allow painless and quick data retrieval on pests and their hosts from [EPPO Data Services](https://data.eppo.int/) and [EPPO Global Database](https://gd.eppo.int/). First of all, it allows extraction of *scientific names* of organisms (and viruses), as well as *synonyms* and *common names* from *SQLite* database. The data base can be easily downloaded with `eppo_database_download()` function. Second, there are four functions in the package that use **REST API** to extract data on *hosts*, *categorization* and *taxonomy* and *pests*. Further, there is a function that downloads **data** *csv* files containing information on organisms (and viruses) distribution. Important feature is that the *csv* are **never saved onto hard drive**, instead they are directly used to create `data.frame` that can be assigned to a variable in **R**. 
@@ -52,7 +63,7 @@ With this three short steps you are ready to go.
 Currently searching for pest names supports scientific names, synonyms and common names. By default search will work with partial names -- e.g. when you query for *Cydia packardi* you get information related to this species, while when you query for *Cydia* you get information on whole genus. Likewise, when you search for *Droso* you will get information on all species that contain *Droso* in their names. Moreover you can pass whole vector of terms in one shot, e.g. `c('Xylella', 'Cydia packardi', 'Droso')`.
 
 ```{r eval = FALSE}
-# Create vector of names that you are looking for
+### Create vector of names that you are looking for
 pests_query <- c('Cydia', "Triticum aestivum", "abcdef", "cadang")
 ```
 
@@ -61,13 +72,13 @@ Than you should start with querying for names and assigning your results to a va
 ```{r eval = FALSE}
 pest_names <- eppo_names_tables(pests_query, eppo_SQLite)
 names(pest_names)
-#names that exist in database
+### names that exist in database
 head(pest_example[[1]], 5)
-#names that were not found
+### names that were not found
 head(pest_example[[2]], 5)
-#preferred names for eppocodes from first table
+### preferred names for eppocodes from first table
 head(pest_example[[3]], 5)
-#all names that are associated to eppocodes from first data frame
+### all names that are associated to eppocodes from first data frame
 head(pest_example[[4]], 5)
 ```
 
@@ -121,9 +132,9 @@ As result `eppo_tabletools_cat` you will get `list` with two elements:
 
 ```{r eval = FALSE}
 pests_cat <- eppo_tabletools_cat(pest_names, eppo_token)
-#long format table
+### long format table
 head(pests_cat[[1]], 5)
-#comapct table with information for each eppocode condensed into one cell
+### comapct table with information for each eppocode condensed into one cell
 head(pests_cat[[2]],5)
 ```
 
@@ -192,7 +203,7 @@ Suppose, that from previous name query we are interested only in viroids and vir
 ```{r eval = FALSE}
 virs_eppocodes <- pest_names$all_associated_names %>%
   dplyr::filter(grepl("viroid", fullname) | grepl("virus", fullname)) %>%
-  .[,5] %>% #eppocodes are in 5th column
+  .[,5] %>% ## eppocodes are in 5th column
   unique()
 ```
 
@@ -201,7 +212,7 @@ We can now pass `virs_eppocodes` as `raw_eppocodes` argument, and in consequence
 virs_taxonomy <- eppo_tabletools_taxo(token = eppo_token,
                                       raw_eppocodes = virs_eppocodes,
                                       use_raw_codes = TRUE)
-virs_taxonomy$long_table #you can also access list elements by their names
+virs_taxonomy$long_table ## you can also access list elements by their names
 virs_taxonomy$compact_table
 ```
 
@@ -279,5 +290,5 @@ eppo_fulltable
 ```{r eval = TRUE, echo = FALSE}
 example_full_table <- readRDS("vignette_mock_full_table.RDS")
 example_full_table %>%
-  knitr::kable()
+  knitr::kable(caption = "Full table with names, hosts, distribution, taxonomy and categorizatio of pests")
 ```

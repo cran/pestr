@@ -10,6 +10,7 @@ knitr::opts_chunk$set(
 )
 
 ## ----setup--------------------------------------------------------------------
+# Load packages
 library("pestr")
 library("dplyr")
 
@@ -39,7 +40,7 @@ abies_alba_pests$long_table %>%
   table()
 
 ### Than we can create very simple barplot to visualize number of
-### species in particular type of pest
+### species in particular type of pest - experimental, host and major host
 abies_alba_pests$long_table %>%
   dplyr::select(labelclass) %>%
   table() %>%
@@ -65,6 +66,8 @@ pests_taxonomy$compact_table %>%
   dplyr::select(taxonomy) %>%
   table()
 
+### barplot of number of pest species in each major taxonomic group -
+### in the case of our query: Arthropoda, Chromista, Fungi, Nematoda, Plantae
 pests_taxonomy$compact_table %>%
   dplyr::select(taxonomy) %>%
   table() %>%

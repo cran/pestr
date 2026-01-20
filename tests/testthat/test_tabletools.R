@@ -42,7 +42,7 @@ test_that("Test that names f creates correct condensed data frame", {
     dplyr::filter(eppocode == 'LASPPA', preferred == 0) %>%
     dplyr::mutate(Other = ifelse(codelang == 'la', 'Synonym', 'Other languages')) %>%
     dplyr::arrange(desc(Other), fullname) %>%
-    dplyr::select(fullname, Other) %>%
+    dplyr::select("fullname", "Other") %>%
     dplyr::group_by(Other) %>%
     dplyr::mutate(Other_names = paste(fullname, collapse = ', ')) %>%
     dplyr::mutate(Other_names = paste(Other, Other_names, sep = ': ')) %>%
@@ -68,7 +68,7 @@ test_that("Test that hosts f checks if parsed arguments are of proper class", {
   tester_host_func <- function() {
     mockr::with_mock(
       eppo_rest_download = function(eppocodes, hosts, token) readRDS("mocked_hosts_xylella.RDS"),
-      eppo_tabletools_hosts(testing_names, eppo_token)
+      {eppo_tabletools_hosts(testing_names, eppo_token)}
     )
   }
 
@@ -108,7 +108,7 @@ test_that("Test that hosts f works correctly", {
   tester_host_func <- function() {
     mockr::with_mock(
       eppo_rest_download = function(eppocodes, hosts, token) readRDS("mocked_hosts.RDS"),
-      eppo_tabletools_hosts(testing_names, eppo_token)
+      {eppo_tabletools_hosts(testing_names, eppo_token)}
     )
   }
 
@@ -120,12 +120,12 @@ test_that("Test that hosts f works correctly", {
   ###test compact table values
 
   compact_names_test <- test_host_table %>%
-    dplyr::select(.data$eppocode, .data$labelclass, .data$full_name) %>%
+    dplyr::select("eppocode", "labelclass", "full_name") %>%
     dplyr::group_by(.data$eppocode, .data$labelclass) %>%
     dplyr::mutate(hosts = paste(.data$full_name, collapse = ', ')) %>%
     dplyr::mutate(hosts = paste0(.data$labelclass, ': ', .data$hosts)) %>%
     dplyr::ungroup() %>%
-    dplyr::select(.data$eppocode, .data$hosts) %>%
+    dplyr::select("eppocode", "hosts") %>%
     dplyr::distinct() %>%
     dplyr::group_by(.data$eppocode) %>%
     dplyr::mutate(hosts = paste(.data$hosts, collapse = '; ')) %>%
@@ -154,7 +154,7 @@ test_that("Test that categorization f returns correct structure
   tester_cat_func <- function() {
     mockr::with_mock(
       eppo_rest_download = function(eppocodes, categorization, token) readRDS("mocked_cat_xylella.RDS"),
-      eppo_tabletools_cat(testing_names, eppo_token)
+      {eppo_tabletools_cat(testing_names, eppo_token)}
     )
   }
 
@@ -195,7 +195,7 @@ test_that("Test that cat f works correctly", {
   tester_cat_func <- function() {
     mockr::with_mock(
       eppo_rest_download = function(eppocodes, categorization, token) readRDS("mocked_cat.RDS"),
-      eppo_tabletools_cat(testing_names, eppo_token)
+      {eppo_tabletools_cat(testing_names, eppo_token)}
     )
   }
 
@@ -217,7 +217,7 @@ test_that("Test that cat f works correctly", {
                                             'add/del/trans: ',
                                             yr_add, '/', yr_del, '/', yr_trans)) %>%
       tidyr::unnest(cols = .data$data) %>%
-      dplyr::select(.data$nomcontinent, .data$categorization) %>%
+      dplyr::select("nomcontinent", "categorization") %>%
       dplyr::group_by(.data$nomcontinent) %>%
       dplyr::mutate(categorization = paste(categorization, collapse = '; ')) %>%
       dplyr::distinct(categorization) %>%
@@ -254,7 +254,7 @@ test_that("Test that taxonomy f returns correct structure
   tester_taxo_func <- function() {
     mockr::with_mock(
       eppo_rest_download = function(eppocodes, categorization, token) readRDS("mocked_taxo.RDS"),
-      eppo_tabletools_taxo(testing_names, eppo_token)
+      {eppo_tabletools_taxo(testing_names, eppo_token)}
     )
   }
 
@@ -277,18 +277,21 @@ test_that("Test that taxonomy f works correctly", {
   testing_taxo <- readRDS("mocked_taxo.RDS")
   names(testing_taxo) <- eppocodes
 
-  test_taxon_names <- data.frame(eppocode = c("HETDPA", "LASPPA", "PHIACI",
-                                              "PLADBR", "ABIAL", "CCCVD0",
-                                              "ERWIST", "PNTOIN"),
-                                 taxonomy = c("Nematoda", "Arthropoda", "Fungi",
-                                              "Protista", "Plantae", "Riboviria",
-                                              "Bacteria", "Bacteria"),
-                                 stringsAsFactors = FALSE)
+  test_taxon_names <- data.frame(
+    eppocode = c(
+      "HETDPA", "LASPPA", "PHIACI", "PLADBR", "ABIAL", "CCCVD0", "ERWIST",
+      "PNTOIN", "PNTOST"
+      ),
+    taxonomy = c(
+      "Nematoda", "Arthropoda", "Fungi", "Protista", "Plantae", "Viroids",
+      "Bacteria", "Bacteria", "Bacteria"
+    ), stringsAsFactors = FALSE
+  )
 
   tester_taxo_func <- function() {
     mockr::with_mock(
       eppo_rest_download = function(eppocodes, categorization, token) readRDS("mocked_taxo.RDS"),
-      eppo_tabletools_taxo(testing_names, eppo_token)
+      {eppo_tabletools_taxo(testing_names, eppo_token)}
     )
   }
 
@@ -316,7 +319,7 @@ test_that("Test that distribution f returns correct structure
   tester_distri_func <- function() {
     mockr::with_mock(
       eppo_csv_download = function(eppocodes) readRDS("mocked_distri.RDS"),
-      eppo_tabletools_distri(testing_names)
+      {eppo_tabletools_distri(testing_names)}
     )
   }
 
@@ -342,7 +345,7 @@ test_that("Test that distribution f returns correct values
   tester_distri_func <- function() {
     mockr::with_mock(
       eppo_csv_download = function(eppocodes) readRDS("mocked_distri.RDS"),
-      eppo_tabletools_distri(testing_names)
+      {eppo_tabletools_distri(testing_names)}
     )
   }
 
@@ -395,7 +398,7 @@ test_that("Test that pests f returns correct structure
   tester_pest_func <- function() {
     mockr::with_mock(
       eppo_rest_download = function(eppocodes, pests, token) readRDS("mocked_pests.RDS"),
-      eppo_tabletools_pests(testing_names, eppo_token)
+      {eppo_tabletools_pests(testing_names, eppo_token)}
     )
   }
 
@@ -414,7 +417,7 @@ test_that("Test that pest f works correctly", {
   tester_pest_func <- function() {
     mockr::with_mock(
       eppo_rest_download = function(eppocodes, pests, token) readRDS("mocked_pests.RDS"),
-      eppo_tabletools_pests(testing_names, eppo_token)
+      {eppo_tabletools_pests(testing_names, eppo_token)}
     )
   }
 

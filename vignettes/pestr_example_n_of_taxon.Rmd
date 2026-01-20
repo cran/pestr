@@ -20,8 +20,14 @@ knitr::opts_chunk$set(
   fig.height = 5
 )
 ```
+<!-- logo: start -->
+
+<img src="https://raw.githubusercontent.com/mczyzj/pestr/master/inst/figures/pestr-hex_center.png" width="250px" align="right" alt="pestr package hexsticker" style="border: 0px"/>
+
+<!-- logo: end -->
 
 ```{r setup}
+# Load packages
 library("pestr")
 library("dplyr")
 ```
@@ -84,7 +90,7 @@ str(abies_alba_pests)
 
 The *long_table* element contains what we actually need for our analyses: *pest_eppocode* and *labelclass* columns. Lets start with latter.
 
-## Step 3 -- number of pests type
+## Step III -- number of pests type
 
 Pest types are stored in *labelclass* column. We will use few very basic `R` and `dplyr` package commands to check numbers we are interested in.
 
@@ -96,7 +102,7 @@ abies_alba_pests$long_table %>%
   table()
 
 ### Than we can create very simple barplot to visualize number of
-### species in particular type of pest
+### species in particular type of pest - experimental, host and major host
 abies_alba_pests$long_table %>%
   dplyr::select(labelclass) %>%
   table() %>%
@@ -104,7 +110,7 @@ abies_alba_pests$long_table %>%
            col = "#AF0011", ylim = c(0, 30))
 ```
 
-## Step 4 -- Number of taxons
+## Step IV -- Number of taxons
 
 Obtaining number of pests taxons is not very complicated. Since we can use `eppocodes` directly, we can pass whole column to `eppo_tabletools_taxo` function, which will retrieve data on pests taxonomy.
 
@@ -134,6 +140,8 @@ pests_taxonomy$compact_table %>%
   dplyr::select(taxonomy) %>%
   table()
 
+### barplot of number of pest species in each major taxonomic group -
+### in the case of our query: Arthropoda, Chromista, Fungi, Nematoda, Plantae
 pests_taxonomy$compact_table %>%
   dplyr::select(taxonomy) %>%
   table() %>%
